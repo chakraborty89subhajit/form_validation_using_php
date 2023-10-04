@@ -1,23 +1,58 @@
+<?php
 
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>user regitration form</title>
-</head>
-<body>
-<h1>User Registration Form</h1>
+if(isset($_POST['submit'])){
+	$form=false;
+	$user_first_name=$_POST['user_first_name'];
+	$user_last_name=$_POST['user_last_name'];
+	$user_email=$_POST['user_email'];
+	$user_password=$_POST['user_password'];
+	$user_confrim_password=$_POST['user_confrim_password'];
+	$gender_dd=$_POST['gender_dd'];
+	
+	if(isset($_POST['eduradio'])){
+	$eduradio=$_POST['eduradio'];
+}else{
+	$eduradio='';
+}
+	if(isset($_POST['languagecb'])){
+	$languagecb=$_POST['languagecb'];
+	$languagecb=implode(",", $languagecb);	
+	}
+	else{
+		$languagecb='';
+	}
 
+	//echo"<pre>";
+	//print_r($_POST);
+	//echo $languagecb;
+
+
+
+	if(empty($user_first_name) || empty($user_last_name) || empty($user_email) || empty($user_password) || empty($user_confrim_password) || (empty($gender_dd)) || (empty($eduradio)) || (empty($laguagecb))){
+		echo $gender_dd."<br>";
+		//echo $eduradio."<br>";
+
+		//echo $languagecb."<br>";
+
+		echo"pls. provide complete data<br>";
+		$form=true;
+	}
+
+}else{
+	echo"no data is coming<br>";
+	
+}
+if ($form){
+?>
 <div class="container">
 	<table border="1">
-		<form method="post" action="registration.php">
+		<form method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
 			<tr>
 				<td>
 					first name:
 				</td>
 				<td>
-					<input type = "text" name="user_first_name"/>
+					<input type = "text" name="user_first_name" value="<?php echo $user_first_name;?>" />
 				</td>
 			</tr>
 
@@ -27,7 +62,7 @@
 					last name:
 				</td>
 				<td>
-					<input type = "text" name="user_last_name"/>
+					<input type = "text" name="user_last_name" value="<?php echo $user_last_name;?>"/>
 				</td>
 			</tr>
              
@@ -37,7 +72,7 @@
 					email:
 				</td>
 				<td>
-					<input type = "text" name="user_email"/>
+					<input type = "text" name="user_email" value="<?php echo $user_email;?>"/>
 				</td>
 			</tr>
 
@@ -46,7 +81,7 @@
 					password:
 				</td>
 				<td>
-					<input type = "password" name="user_password"/>
+					<input type = "password" name="user_password" value="<?php echo $user_password;?>";/>
 				</td>
 			</tr>
             
@@ -55,7 +90,7 @@
 					confrim password:
 				</td>
 				<td>
-					<input type = "password" name="user_confrim_password"/>
+					<input type = "password" name="user_confrim_password" value="<?php echo $user_confrim_password;?>"/>
 				</td>
 			</tr>
 
@@ -66,7 +101,7 @@
 					gender:
 				</td>
 				<td>
-					<select name = "gender_dd" id="user_gender"/>
+					<select name = "gender_dd" id="user_gender" value="<?php echo $gender_dd;?>"/>
 					<option value="select_your_gender">select your gender</option>
 					<option value="male">male</option>
 					<option value="female">female</option>
@@ -114,5 +149,6 @@
 		</form>
 	</table>
 </div>
-</body>
-</html>
+<?php
+}
+?>

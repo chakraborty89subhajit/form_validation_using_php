@@ -9,27 +9,53 @@ if(isset($_POST['submit'])){
 	$user_confrim_password=$_POST['user_confrim_password'];
 	$gender_dd=$_POST['gender_dd'];
 	
+    $languagecb=array();
+
+	$matric_pass_checked="";
+	$higher_secondary_pass_checked="";
+	$graduate_checked="";
+	$post_graduate_checked="";
+	$phd_checked="";
+
 	if(isset($_POST['eduradio'])){
 	$eduradio=$_POST['eduradio'];
+	if($eduradio=='matric_pass'){
+		$matric_pass_checked="checked='checked'";
+	}
+	if($eduradio=='higher_secondary_pass'){
+		$higher_secondary_pass_checked="checked='checked'";
+	}
+	if($eduradio=='graduate'){
+		$graduate_checked="checked='checked'";
+	}
+	if($eduradio=='post_graduate'){
+		$post_graduate_checked="checked='checked'";
+	}
+	if($eduradio=='phd'){
+		$phd_checked="checked='checked'";
+	}
 }else{
 	$eduradio='';
 }
+
+   
+
 	if(isset($_POST['languagecb'])){
 	$languagecb=$_POST['languagecb'];
-	$languagecb=implode(",", $languagecb);	
+	$languagecbop=implode(",", $languagecb);	
 	}
 	else{
-		$languagecb='';
+		$languagecbop='';
 	}
 
 	//echo"<pre>";
 	//print_r($_POST);
-	//echo $languagecb;
+	//echo $languagecbop;
 
 
 
-	if(empty($user_first_name) || empty($user_last_name) || empty($user_email) || empty($user_password) || empty($user_confrim_password) || (empty($gender_dd)) || (empty($eduradio)) || (empty($laguagecb))){
-		echo $gender_dd."<br>";
+	if(empty($user_first_name) || empty($user_last_name) || empty($user_email) || empty($user_password) || empty($user_confrim_password) || (empty($gender_dd)) || (empty($eduradio)) || (empty($languagecb))){
+		//echo $gender_dd."<br>";
 		//echo $eduradio."<br>";
 
 		//echo $languagecb."<br>";
@@ -37,9 +63,14 @@ if(isset($_POST['submit'])){
 		echo"pls. provide complete data<br>";
 		$form=true;
 	}
+	//else ((!empty($user_first_name)) || (!empty($user_last_name)) || (!empty($user_email)) || (!empty($user_password)) || (!empty($user_confrim_password)) || (!empty($gender_dd)) || (!empty($eduradio)) || (!empty($laguagecb))) {
+	else{
+			echo"go to home page";
+	}
 
 }else{
 	echo"no data is coming<br>";
+	//$form=true;
 	
 }
 if ($form){
@@ -100,13 +131,22 @@ if ($form){
 				<td>
 					gender:
 				</td>
+				<?php
+				$gender_array=array('male','female','custom','prefare_not_to_say');
+				?>
 				<td>
 					<select name = "gender_dd" id="user_gender" value="<?php echo $gender_dd;?>"/>
 					<option value="select_your_gender">select your gender</option>
-					<option value="male">male</option>
-					<option value="female">female</option>
-					<option value="custom">custom</option>
-					<option value="prefare_not_to_say">prefare not to say</option>
+					<?php 
+
+                    foreach($gender_array as $gender_list){
+                    	if($gender_dd==$gender_list){
+                    		echo"<option selected>".$gender_list."</option>";
+                    	}else{
+                    		echo"<option>".$gender_list."</option>";
+                    	}
+                    }
+					?>
 				</td>
 			</tr>
 
@@ -117,11 +157,21 @@ if ($form){
 				</td>
 				<td>
 					
-					<input  type="radio" name ="eduradio" value ="matric pass">matric pass<br>
-					<input type="radio" name ="eduradio" value ="higher secondary pass">higher secondary pass<br>
-					<input  type="radio" name ="eduradio" value ="graduate">graduate<br>
-					<input  type="radio" name ="eduradio" value ="post graduate">post graduate<br>
-					<input  type="radio" name ="eduradio" value ="phd">phd<br>
+					<input  type="radio" name ="eduradio" value ="matric_pass"
+                    <?php echo $matric_pass_checked;?>>
+					matric pass <br>
+					<input type="radio" name ="eduradio" value ="higher_secondary_pass"
+                     <?php echo $higher_secondary_pass_checked;?>>
+					higher secondary pass<br>
+					<input  type="radio" name ="eduradio" value ="graduate"
+                    <?php echo $graduate_checked;?>>
+					graduate<br>
+					<input  type="radio" name ="eduradio" value ="post_graduate"
+                    <?php echo $post_graduate_checked;?>>
+					post graduate<br>
+					<input  type="radio" name ="eduradio" value ="phd"
+                    <?php echo $phd_checked;?>>
+					phd<br>
 				</td>
 			</tr>
 
@@ -131,14 +181,19 @@ if ($form){
 					language known:
 				</td>
 				<td>
-					
-					<input  type="checkbox" name ="languagecb[]" value="c">c<br>
-					<input type="checkbox" name ="languagecb[]" value="c++">c++<br>
-					<input  type="checkbox" name ="languagecb[]" value="java">java<br>
-					<input  type="checkbox" name ="languagecb[]" value="python">python<br>
-					<input  type="checkbox" name ="languagecb[]" value="php">php<br>
-					<input  type="checkbox" name ="languagecb[]" value="other">other<br>
+				<?php $languagearr=array('c','c++','python','java','php','other');
+                  
+                  foreach($languagearr as $pl){
+                      if(in_array($pl, $languagecb)){
+                  	 echo'<input  type="checkbox" name ="languagecb[]" value="'.$pl.'" checked="checked">'.$pl.'<br>';
+                  }else{
+                    echo'<input  type="checkbox" name ="languagecb[]" value="'.$pl.'">'.$pl.'<br>';
+}
+}
+				?>
 				</td>
+					
+					
 			</tr> 
           <tr>
           	<td><input type="submit" value="submit" name="submit"></td>
